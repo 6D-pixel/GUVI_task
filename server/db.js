@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   age: { type: Number, default: 0 },
   gender: { type: String, default: "" },
   dob: { type: Date, default: Date.now },
-  mobile: Number,
+  mobile: { type: String, default: "" }
 });
 
 const User = mongoose.model("User", userSchema);
