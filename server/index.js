@@ -1,11 +1,9 @@
-const express = require('express');
-
+const express = require("express");
+const rootRouter = require("./routes/index");
 const app = express();
 
-app.get('/',(req,res)=>{
-   return res.json({msg:"hello"})
-})
+app.use("/api/v1", rootRouter);
 
-app.listen(3000 , ()=>{
-    console.log('listening')
-})
+app.listen(3000, () => {
+  console.log("listening");
+});
