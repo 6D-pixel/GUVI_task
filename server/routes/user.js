@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const zod = require("zod");
 const { User } = require("../db");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config");
+const { authMiddleware } = require("../middleware");
 
 //signup
 const signupBody = zod.object({
@@ -22,12 +25,15 @@ router.post("/signup", async (req, res) => {
     return res.status(411).json({ msg: "user already exist" });
   }
   //create user
-  await User.create({
+  const user = await User.create({
     Name: req.body.Name,
     email: req.body.email,
     password: req.body.password,
   });
-  res.status(200).json({ msg: "created new user successfully " });
+
+  const userId = user._id;
+  const token = jwt.sign({ userId }, JWT_SECRET);
+  res.status(200).json({ token: token, msg: "created new user successfully " });
 });
 
 //login
@@ -45,12 +51,29 @@ router.post("/login", async (req, res) => {
     password: req.body.password,
   });
   if (user) {
-    return res.status(200).json({ msg: "success" });
+    const userId = user._id;
+    const token = jwt.sign({ userId }, JWT_SECRET);
+    return res.status(200).json({ msg: "success", token: token });
   }
   return res.status(411).json({ msg: "Error while logging in" });
 });
 
 //update
-router.post("/update", async (req, res) => {});
+const updateBody = zod.object({
+  age: zod.number(),
+  gender: zod.string(),
+  dob: zod.date(),
+  mobile: zod.number(),
+});
+router.put("/update", authMiddleware, async (req, res) => {
+  const { success } = updateBody.safeParse(req.body);
+  if (!success) {
+    return res.status(411).json({ msg: "invalid input" });
+  }
+  await User.updateOne(req.body, {
+    id: req.userId,
+  });
+  res.status(200).json({ msg: "Updated Successfully" });
+});
 
 module.exports = router;
