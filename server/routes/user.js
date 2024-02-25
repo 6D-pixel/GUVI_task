@@ -62,21 +62,26 @@ router.post("/login", async (req, res) => {
 const updateBody = zod.object({
   age: zod.number().optional(),
   gender: zod.string().optional(),
-  dob: zod.coerce.date().optional(),
+  dob: zod.string().optional(),
   mobile: zod.string().optional(),
 });
 router.put("/update", authMiddleware, async (req, res) => {
-  console.log(req.body);
   const { success } = updateBody.safeParse(req.body);
   if (!success) {
     return res.status(411).json({ msg: "invalid input" });
   }
-  console.log(req.userId);
   await User.updateOne(
     { _id: req.userId },
-    { $set: req.body }
+    { $set: req.body.profileData }
   );
   res.status(200).json({ msg: "Updated Successfully" });
 });
+
+router.get("/userData",authMiddleware,async (req,res)=>{
+  const user =await User.findOne({
+    _id : req.userId
+  }).select('age gender dob mobile')
+  res.status(200).json(user)
+})
 
 module.exports = router;

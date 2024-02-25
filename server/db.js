@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   age: { type: Number, default: 0 },
   gender: { type: String, default: "" },
-  dob: { type: Date, default: Date.now },
+  dob: { type: String, default: () => new Date().toISOString().split('T')[0] },
   mobile: { type: String, default: "" }
 });
 
