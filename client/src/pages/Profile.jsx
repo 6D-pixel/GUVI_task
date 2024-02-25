@@ -111,7 +111,7 @@ const Profile = () => {
             try {
               const response = await axios.put(
                 "http://localhost:3000/api/v1/user/update",
-                {profileData},
+                { profileData },
                 {
                   headers: {
                     Authorization: "Bearer " + localStorage.getItem("token"),
@@ -120,13 +120,18 @@ const Profile = () => {
               );
               console.log("Update Response:", response.data);
               // Handle success, update UI, etc.
-            } catch (error) {
-              console.error("Error updating user:", error);
-              // Handle error, show error message, etc.
+            } catch (err) {
+              if (err.response) {
+                alert(err.response.data.msg);
+              } else if (err.request) {
+                alert("No response received from the server");
+              } else {
+                alert("Error during request setup:", err.message);
+              }
             }
           }}
         />
-        <Logout/>
+        <Logout />
       </div>
     </section>
   );
