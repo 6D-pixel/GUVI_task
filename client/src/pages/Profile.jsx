@@ -3,6 +3,7 @@ import Heading from "../component/Heading";
 import Button from "../component/Button";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import Logout from "../component/Logout";
 const Profile = () => {
   const [profileData, setProfileData] = useState({
     age: 0,
@@ -125,6 +126,7 @@ const Profile = () => {
             }
           }}
         />
+        <Logout/>
       </div>
     </section>
   );
