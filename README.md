@@ -22,3 +22,7 @@ Note: The above task has to be implemented with
 
 Frontend: Reactjs
 Backend : Nodejs
+
+## project
+- created frontend using vitejs react
+- backend using nodejs express
