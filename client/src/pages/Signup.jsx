@@ -9,17 +9,17 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [Name, setName] = useState("");
-  const [email, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   return (
-    <section className="bg-slate-400 h-screen flex justify-center items-center ">
+    <section className="bg-green-400 h-screen flex justify-center items-center ">
       <div className="bg-white h-max w-80 text-center p-2 px-4 rounded-lg">
         <Heading label="Sign up" />
         <SubHeading label="Enter your information to create an account" />
         <InputBox
           onChange={(e) => {
-            setFirstName(e.target.value);
+            setName(e.target.value);
           }}
           label="Name"
           placeholder="dinesh"
@@ -27,7 +27,7 @@ const Signup = () => {
 
         <InputBox
           onChange={(e) => {
-            setUsername(e.target.value);
+            setEmail(e.target.value);
           }}
           label="Email"
           placeholder="dinesh@gmail.com"
@@ -37,7 +37,12 @@ const Signup = () => {
             setPassword(e.target.value);
           }}
           label="Password"
-          placeholder="***"
+        />
+        <InputBox
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+          label="Confirm Password"
         />
         <div className="pt-4">
           <Button
@@ -51,7 +56,7 @@ const Signup = () => {
                 }
               );
               localStorage.setItem("token", response.data.token);
-              navigate("/profile");
+              navigate("/login");
             }}
             label="Sign up"
           />

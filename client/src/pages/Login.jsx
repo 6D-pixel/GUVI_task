@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   return (
-    <section className="bg-slate-400 h-screen flex justify-center items-center">
+    <section className="bg-green-400 h-screen flex justify-center items-center">
       <div className="w-80 text-center h-max bg-white rounded-lg p-2 px-4">
         <Heading label="Login" />
         <SubHeading label="Enter your credentials to access your account" />
@@ -33,14 +33,14 @@ const Login = () => {
           <Button
             onClick={async () => {
               const response = await axios.post(
-                "http://localhost:3000/api/v1/user/signin",
+                "http://localhost:3000/api/v1/user/login",
                 {
                   email,
                   password,
                 }
               );
               localStorage.setItem("token", response.data.token);
-              navigate("/profile");
+              navigate("/profile?email=" + email);
             }}
             label="Login"
           />
